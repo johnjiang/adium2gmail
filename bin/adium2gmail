@@ -1,5 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'adium2gmail'
+require 'trollop'
 
+opts = Trollop::options do
+  version "adium2gmail #{Adium2Gmail::VERSION}"
+  opt :output, "Output path", :short => 'o', :default => 'chatlogs'
+  opt :input, "Input path", :short => 'i', :default => '~/Library/Application Support/Adium 2.0/Users/Default/Logs'
+end
 
+Adium2Gmail::process_adium_chatlogs opts[:input], opts[:output]

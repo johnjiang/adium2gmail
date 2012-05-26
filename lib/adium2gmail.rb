@@ -62,9 +62,9 @@ module Adium2Gmail
       </div>}
   end
 
-  def self.process_adium_chatlogs(path, output_path)
+  def self.process_adium_chatlogs(input, output_path)
     File.open output_path, "w" do |output_file|
-      Find.find(path) do |f|
+      Find.find(input) do |f|
         if f.match(/\.chatlog.*?\.xml\Z/) && ! f.include?("msn chat") #skipping multiple conversations for now
           from_email = File.basename(File.dirname(File.dirname(File.dirname(f)))).sub(/.*?\./, "") #this is somewhat hacky...
           to_email, chat_date = File.basename(f, ".xml").split()

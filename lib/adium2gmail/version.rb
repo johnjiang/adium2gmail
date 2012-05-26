@@ -1,3 +1,3 @@
-module adium2gmail
-  VERSION = "0.1.0"
+module Adium2Gmail
+  VERSION = "0.1.1"
 end
