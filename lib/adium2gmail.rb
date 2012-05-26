@@ -1,4 +1,4 @@
-require "Adium2Gmail/version"
+require "adium2gmail/version"
 require 'date'
 require 'find'
 
