@@ -18,7 +18,10 @@ Or install it yourself as:
 
 ## Usage
 
-Write usage instructions here
+Run:
+    $ adium2gmail -i --input <path> -o --output <path>
+
+Open the file in Thunderbird to view all the chatlogs
 
 ## Contributing
 

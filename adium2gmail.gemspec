@@ -4,8 +4,8 @@ require File.expand_path('../lib/Adium2Gmail/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["John Jiang"]
   gem.email         = ["johnjiang101@gmail.com"]
-  gem.description   = %q{Write a gem description}
-  gem.summary       = %q{Write a gem summary}
+  gem.description   = %q{Converts Adium chatlogs to emails}
+  gem.summary       = %q{Creates gmail like emails from Adium chatlogs. This gem allows you to easily store all your chatlogs on gmail.}
   gem.homepage      = ""
 
   gem.add_dependency('mail')
