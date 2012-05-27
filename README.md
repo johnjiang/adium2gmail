@@ -16,6 +16,10 @@ Run:
 
 Open the file in Thunderbird to view all the chatlogs
 
+Copy it into your gmail
+
+![Feature Diagram](https://github.com/johnjiang/adium2gmail/raw/gh-pages/images/example.png)
+
 ## TODO
 
 1. Multiprocessing of chatlogs to improve performance
