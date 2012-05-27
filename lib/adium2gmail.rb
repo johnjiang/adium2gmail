@@ -16,7 +16,7 @@ module Adium2Gmail
     mail = Mail.new do
       from from_email
       to to_email
-      subject "Chat with #{to_email}"
+      subject "Chat with #{from_email}"
 
       content_type 'text/html; charset=UTF-8'
       body email_body
