@@ -70,8 +70,8 @@ module Adium2Gmail
     File.open output_path, "w" do |output_file|
       Find.find(input) do |f|
         if f.match(/\.chatlog.*?\.xml\Z/) && ! f.include?("msn chat") #skipping multiple conversations for now
-          from_email = File.basename(File.dirname(File.dirname(File.dirname(f)))).sub(/.*?\./, "") #this is somewhat hacky...
-          to_email, chat_date = File.basename(f, ".xml").split()
+          to_email = File.basename(File.dirname(File.dirname(File.dirname(f)))).sub(/.*?\./, "") #this is somewhat hacky...
+          from_email, chat_date = File.basename(f, ".xml").split()
           chat_date = DateTime.parse(chat_date.gsub!(".", ":"))
 
           output_file.puts create_email(from_email, to_email, f, chat_date)
