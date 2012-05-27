@@ -10,7 +10,7 @@ module Adium2Gmail
   LOGGER = Logger.new(STDOUT)
 
   def self.create_email(from_email, to_email, f, chat_date)
-    LOGGER.info "Generating email from #{to_email} on #{chat_date}"
+    LOGGER.info "Generating email from #{from_email} on #{chat_date}"
     email_body = get_email_body f
 
     mail = Mail.new do
