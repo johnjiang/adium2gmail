@@ -4,24 +4,22 @@ Converts Adium chatlogs to gmail style emails.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'adium2gmail'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Run:
 
     $ gem install adium2gmail
 
 ## Usage
 
 Run:
+
     $ adium2gmail -i --input <path> -o --output <path>
 
 Open the file in Thunderbird to view all the chatlogs
+
+## TODO
+
+1. Multiprocessing of chatlogs to improve performance
+2. Handle group chats
 
 ## Contributing
 
