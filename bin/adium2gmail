@@ -2,12 +2,48 @@
 
 require 'adium2gmail'
 require 'Find'
-require 'trollop'
+require 'optparse'
+require 'ostruct'
 
-opts = Trollop::options do
-  version "adium2gmail #{Adium2Gmail::VERSION}"
-  opt :output, "Output path", :short => 'o', :default => 'chatlogs'
-  opt :input, "Input path", :short => 'i', :default => File.expand_path('~/Library/Application Support/Adium 2.0/Users/Default/Logs')
+
+options = OpenStruct.new
+options.input_path = File.expand_path('~/Library/Application Support/Adium 2.0/Users/Default/Logs')
+options.output_path = "chatlogs"
+options.parallel = false
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: adium2gmail [options]"
+
+  opts.separator ""
+  opts.separator "Specific options:"
+
+  opts.on("-i", "--input [PATH]", "Path of the adium chatlogs") do |input_path|
+    options.input_path = input_path
+  end
+
+  opts.on("-o", "--output [PATH]", "Path of the output path") do |output_path|
+    options.output_path = output_path
+  end
+
+  opts.on("-p", "--[no-]parallel", "Enable parallel processing") do |parallel|
+    options.parallel = parallel
+  end
+
+  opts.separator ""
+  opts.separator "Common options:"
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+  opts.on_tail("--version", "Show version") do
+    puts Adium2Gmail::VERSION
+    exit
+  end
 end
 
-Adium2Gmail::process_adium_chatlogs opts[:input], opts[:output]
+opts.parse!(ARGV)
+
+
+Adium2Gmail::process_adium_chatlogs options.input_path, options.output_path, options.parallel

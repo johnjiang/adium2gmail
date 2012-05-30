@@ -4,6 +4,8 @@ require 'find'
 require 'logger'
 require 'mail'
 require 'nokogiri'
+require 'ostruct'
+require 'parallel'
 
 
 module Adium2Gmail
@@ -28,12 +30,12 @@ module Adium2Gmail
 
   def self.get_email_body(f)
     messages = ''
-    
+
     doc = Nokogiri::XML(File.open(f, "r"))
-    
+
     doc.remove_namespaces! #stupid namespaces
 
-    doc.xpath("//message").each do | message |
+    doc.xpath("//message").each do |message|
       datetime = DateTime.parse(message.xpath("@time").text)
       nickname = message.xpath("@alias").text
       nickname = message.xpath("@sender").text if nickname.blank?
@@ -48,7 +50,7 @@ module Adium2Gmail
     time = date.strftime("%I:%M %p")
 
     message_tag = message_tag.xpath("div/span")
-    
+
     #Not sure why I do the gsub here. I did it in python but didn't comment :(
     #But I'm sure I did it for a good reason
     message = message_tag.text.gsub("&apos;", "&#39;")
@@ -66,17 +68,37 @@ module Adium2Gmail
       </div>}
   end
 
-  def self.process_adium_chatlogs(input, output_path)
-    File.open output_path, "w" do |output_file|
-      Find.find(input) do |f|
-        if f.match(/\.chatlog.*?\.xml\Z/) && ! f.include?("msn chat") #skipping multiple conversations for now
-          to_email = File.basename(File.dirname(File.dirname(File.dirname(f)))).sub(/.*?\./, "") #this is somewhat hacky...
-          from_email, chat_date = File.basename(f, ".xml").split()
-          chat_date = DateTime.parse(chat_date.gsub!(".", ":"))
+  def self.find_logs(input)
+    infos = []
+    Find.find(input) do |f|
+      if f.match(/\.chatlog.*?\.xml\Z/) && !f.include?("msn chat") #skipping multiple conversations for now
+        to_email = File.basename(File.dirname(File.dirname(File.dirname(f)))).sub(/.*?\./, "") #this is somewhat hacky...
+        from_email, chat_date = File.basename(f, ".xml").split()
+        chat_date = DateTime.parse(chat_date.gsub!(".", ":"))
 
-          output_file.puts create_email(from_email, to_email, f, chat_date)
-        end
-      end 
+        info = OpenStruct.new
+        info.from_email = from_email
+        info.to_email = to_email
+        info.f = f
+        info.chat_date = chat_date
+        infos.push info
+      end
     end
-  end  
+
+    return infos
+  end
+
+  def self.process_adium_chatlogs(input, output_path, parallel)
+    File.open output_path, "w" do |output_file|
+      if parallel then
+        Parallel.map(find_logs(input)) do |info|
+          output_file.puts create_email(info.from_email, info.to_email, info.f, info.chat_date)
+        end
+      else
+        find_logs(input).each do |info|
+          output_file.puts create_email(info.from_email, info.to_email, info.f, info.chat_date)
+        end
+      end
+    end
+  end
 end
