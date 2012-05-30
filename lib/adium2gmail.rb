@@ -23,9 +23,9 @@ module Adium2Gmail
       content_type 'text/html; charset=UTF-8'
       body email_body
     end
-    header = "From - " + chat_date.strftime("%a %b %d %H:%M:%S %Y")
-    header += "Date: " + chat_date.strftime("%a, %d %b %Y %H:%M:%S %z")
-    header + "\n" + mail.to_s.split("\n")[1..-1].join("\n") + "\n\n\n"
+    header = "From - " + chat_date.strftime("%a %b %d %H:%M:%S %Y\n")
+    header += "Date: " + chat_date.strftime("%a, %d %b %Y %H:%M:%S %z\n")
+    header + mail.to_s.split("\n")[1..-1].join("\n") + "\n\n\n"
   end
 
   def self.get_email_body(f)

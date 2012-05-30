@@ -25,7 +25,7 @@ opts = OptionParser.new do |opts|
     options.output_path = output_path
   end
 
-  opts.on("-p", "--[no-]parallel", "Enable parallel processing") do |parallel|
+  opts.on("-p", "--[no-]parallel", "Enable parallel processing (experimental!)") do |parallel|
     options.parallel = parallel
   end
 
