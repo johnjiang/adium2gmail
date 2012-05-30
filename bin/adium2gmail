@@ -45,5 +45,4 @@ end
 
 opts.parse!(ARGV)
 
-
 Adium2Gmail::process_adium_chatlogs options.input_path, options.output_path, options.parallel
